@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Rule
+*.un~
+__pycache__
