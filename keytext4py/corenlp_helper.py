@@ -56,7 +56,7 @@ def get_corenlp_client(
 
 def get_token_info(
         corenlp_client: CoreNLPClient, text: str
-) -> List[List[str] ]:
+) -> List[Tuple[str, str] ]:
     """
     [[Token, POS]....[Token, POS]]
     """
@@ -64,5 +64,14 @@ def get_token_info(
     doc: Document = corenlp_client.annotate(text)
     for i, sent in enumerate(doc.sentence):
         for j, token in enumerate(sent.token):
-            token_info.append([token.word, token.pos])
+            token_info.append((token.word, token.pos))
     return token_info
+
+
+def lang2property(lang: str) -> str:
+    if lang == "chinese":
+        return "zh"
+
+
+def langs2properities(langs: List[str]) -> str:
+    return ",".join([lang2property(x) for x in langs])

@@ -17,7 +17,7 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(keytext4py_ext_cpp, m) {
   m.def(
-    "keywords_by_pos", &keytext4py_ext::keywords_by_pos,
+    "fast_keywords", &keytext4py_ext::fast_keywords,
     py::arg("tokens"), 
     py::arg("top_k")=-1, 
     py::arg("target_pos")=std::set<std::string>({"NR", "NN"}), 

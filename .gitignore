@@ -34,3 +34,4 @@
 # Rule
 *.un~
 __pycache__
+*.log

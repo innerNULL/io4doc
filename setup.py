@@ -15,6 +15,17 @@ CURR_DIR: str = os.path.abspath(
     os.path.dirname(__file__))
 
 
+def get_py_cmake() -> str:
+    py_path: str = os.path.abspath(
+        os.readlink(sys.executable))
+    py_bin_path: str = os.path.dirname(py_path)
+    py_cmake: str = os.path.join(py_bin_path, "cmake")
+    if not os.path.isfile(py_cmake):
+        raise Exception(
+            "'{}' does not exist.".format(py_cmake))
+    return py_cmake
+
+
 def get_install_deps() -> Tuple[List[str], List[str] ]:
     dependency_links: List[str] = []
     install_requires: List[str] = []
@@ -141,11 +152,20 @@ class CMakeBuild(build_ext):
             os.makedirs(self.build_temp)
 
         print("CMake Arguments: ", cmake_args)
+        # Depreciated: Using external cmake
+        #subprocess.check_call(
+        #    ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
+        #)
+        #subprocess.check_call(
+        #    ["cmake", "--build", "."] + build_args, cwd=self.build_temp
+        #)
         subprocess.check_call(
-            ["cmake", ext.sourcedir] + cmake_args, cwd=self.build_temp
+            [sys.executable, get_py_cmake(), ext.sourcedir] + cmake_args, 
+            cwd=self.build_temp
         )
         subprocess.check_call(
-            ["cmake", "--build", "."] + build_args, cwd=self.build_temp
+            [sys.executable, get_py_cmake(), "--build", "."] + build_args, 
+            cwd=self.build_temp
         )
 
 

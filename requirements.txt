@@ -1,2 +1,2 @@
-https://ghproxy.com/https://github.com/stanfordnlp/stanza/archive/refs/heads/dev.zip#egg=stanza-dev
+https://ghproxy.com/https://github.com/stanfordnlp/stanza/archive/refs/heads/dev.zip
 cmake==3.22.2

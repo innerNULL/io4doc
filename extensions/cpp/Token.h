@@ -14,7 +14,9 @@ namespace keytext4py_ext {
     
 class Token {
  public:
-  void print();
+  Token() = default;
+  ~Token() = default;
+  void Print();
 
  public:
   uint64_t id = 0;
@@ -25,7 +27,7 @@ class Token {
 };
 
 
-void Token::print() {
+void Token::Print() {
   printf("token info: \n");
   printf("\tid=%ld\n", this->id);
   printf("\ttext='%s'\n", this->text.c_str());

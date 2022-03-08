@@ -149,12 +149,21 @@ void cands_selector(
 
 
 /**
+ * @brief
+ * This is a fast keywords extractor based on some manually 
+ * strategies, includes:
+ *     1. Filting tokens according their PoS
+ *     2. (Bucketing tokens according their PoS)
+ *     3. Ranking tokens according their TF in current document.
+ *     4. Merging each bucket's ranking result with a quota algo.
+ *
  * @note:
  * `weight_scale` is not used for now
  */
 std::vector<std::tuple<std::string, float> > 
-keywords_by_pos(
-    std::vector<std::vector<std::string> >& tokens, 
+fast_keywords(
+    std::vector<
+        std::tuple<std::string, std::string> >& tokens, 
     int32_t top_k=-1, 
     std::set<std::string> target_pos={"NR", "NN"}, 
     int32_t min_word_len=1, bool weight_norm=true, 
@@ -164,12 +173,12 @@ keywords_by_pos(
   std::vector<std::vector<Token*> > keywords_cands;
 
   for (auto& item : tokens) {
-    doc.append_token(item[0], item[1]);
+    doc.AppendToken(std::get<0>(item), std::get<1>(item));
   }
   //doc.print_bow();
 
   if (pos_bucketing) {
-    for (auto& bucket : doc.pos_inverted_idx()) {
+    for (auto& bucket : doc.PosInvertedIndex()) {
       if (target_pos.find(bucket.first) == target_pos.end()) {
         continue;
       }
@@ -177,7 +186,7 @@ keywords_by_pos(
       keywords_cands.emplace_back(keywords_cand_gen(bucket.second));
     }
   } else {
-    std::map<std::string, Token*> bow = doc.bow();
+    std::map<std::string, Token*> bow = doc.BoW();
     keywords_cands.emplace_back(keywords_cand_gen(bow));
   }
 
