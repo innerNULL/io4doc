@@ -7,6 +7,7 @@ from . import corenlp_helper
 from . import utils
 from . import stanza_helper
 from .CoreNLPProcessor import CoreNLPProcessor
+from .SpaCyProcessor import SpaCyProcessor
 
 from keytext4py_ext_cpp import fast_keywords
 
